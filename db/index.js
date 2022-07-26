@@ -6,6 +6,22 @@ const client = new Client('postgres://localhost:5432/juicebox-dev');
  * USER Methods
  */
 
+
+async function getUserByUsername(username) {
+    try {
+        const { rows: [user] } = await client.query(`
+      SELECT *
+      FROM users
+      WHERE username=$1;
+    `, [username]);
+
+        return user;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 async function createUser({
     username,
     password,
@@ -323,6 +339,7 @@ module.exports = {
     updateUser,
     getAllUsers,
     getUserById,
+    getUserByUsername,
     createPost,
     createTags,
     createPostTag,
